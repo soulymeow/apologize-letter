@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For Amora♡</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', serif;
+  color: #263e5b;
+  background:
+   linear-gradient(rgba(30, 65, 105, 0.25), rgba(30, 65, 105, 0.4)),
+    url("./phainon.jpg");
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  overflow-x: hidden;
+}
+
+#starContainer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  top: -30px;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 8px 2px rgba(255,255,255,0.7);
+  animation: fallingStar linear infinite;
+}
+
+@keyframes fallingStar {
+  0% {
+    transform: translate3d(0, -20px, 0);
+    opacity: 0;
+  }
+  10% { opacity: 0.8; }
+  80% { opacity: 0.6; }
+  100% {
+    transform: translate3d(45px, 110vh, 0);
+    opacity: 0;
+  }
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  min-height: 90vh;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.7s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.screen.active {
+  display: flex;
+}
+
+.card {
+  width: min(650px, 100%);
+  padding: 45px 30px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 25px;
+  background: rgba(240, 247, 255, 0.83);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 45px rgba(15, 35, 65, 0.2);
+}
+
+.eyebrow {
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  color: #6684a8;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 6vw, 48px);
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  font-size: 21px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.main-btn {
+  border: none;
+  border-radius: 30px;
+  padding: 13px 28px;
+  background: #547ba5;
+  color: white;
+  font-size: 19px;
+  transition: 0.25s;
+}
+
+.main-btn:hover {
+  background: #345c87;
+  transform: translateY(-3px);
+}
+
+.main-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 30px auto;
+  max-width: 420px;
+}
+
+.gift-box {
+  min-height: 145px;
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.65);
+  color: #345c87;
+  font-size: 19px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.25s;
+}
+
+.gift-box:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: white;
+}
+
+.gift-box.opened {
+  background: rgba(195, 218, 239, 0.9);
+}
+
+.gift-emoji {
+  font-size: 42px;
+}
+
+#giftProgress {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.popup {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(15, 30, 50, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.popup-card {
+  width: min(500px, 100%);
+  background: #f2f7fc;
+  border-radius: 25px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+  animation: popIn 0.3s ease;
+}
+
+.popup-emoji {
+  font-size: 55px;
+  margin-bottom: 15px;
+}
+
+.popup-card h1 {
+  font-size: 32px;
+}
+
+.popup-message {
+  font-size: 22px;
+  line-height: 1.7;
+  white-space: pre-line;
+  margin: 20px 0 25px;
+}
+
+.final-card {
+  width: min(650px, 100%);
+  background: rgba(240,247,255,0.9);
+  padding: 40px 30px;
+  border-radius: 25px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 45px rgba(15,35,65,0.2);
+}
+
+#finalMessage {
+  white-space: pre-line;
+  text-align: left;
+  font-size: 21px;
+  line-height: 1.8;
+  margin: 25px 0;
+}
+
+.reply-card {
+  width: min(480px, 100%);
+}
+
+#replyInput {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  padding: 15px;
+  border: 1px solid #b6cce2;
+  border-radius: 15px;
+  background: white;
+  color: #263e5b;
+  font-family: inherit;
+  font-size: 19px;
+  outline: none;
+  margin: 10px 0 20px;
+}
+
+#replyInput:focus {
+  border-color: #547ba5;
+  box-shadow: 0 0 0 3px rgba(84,123,165,0.15);
+}
+
+.reply-note {
+  font-size: 16px;
+  color: #6684a8;
+  margin-top: 12px;
+}
+
+.music-player {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  width: 250px;
+  padding: 12px 15px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 18px;
+  background: rgba(240,247,255,0.88);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 5px 20px rgba(20,40,70,0.2);
+}
+
+.music-player p {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #547ba5;
+  text-align: center;
+}
+
+.music-player audio {
+  display: block;
+  width: 100%;
+  height: 35px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media(max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  .card, .final-card {
+    padding: 35px 18px;
+  }
+
+  .gift-grid {
+    gap: 10px;
+  }
+
+  .gift-box {
+    min-height: 120px;
+  }
+
+  .music-player {
+    top: 10px;
+    right: 10px;
+    width: 210px;
+  }
+
+  .music-player p {
+    font-size: 13px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="starContainer"></div>
+
+<div class="music-player">
+  <p>♫ A little song for you ♡</p>
+  <audio id="bgMusic" controls loop>
+    <source src="Malcolm Todd - Earrings (SPOTISAVER).mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+</div>
+
+<section id="intro" class="screen active">
+  <div class="card">
+    <p class="eyebrow">✧ An Apolozie letter TT ✧</p>
+    <h1>Im Sorry Amora..</h1>
+    <p class="subtitle">Something special for mi amor!!!. </p>
+    <button class="main-btn" id="startBtn">Open Your Gifts 🎁</button>
+  </div>
+</section>
+
+<section id="memoryScreen" class="screen">
+  <div class="card">
+    <p class="eyebrow">✧ A LITTLE GIFT FOR MY AMORA ✧</p>
+    <h1>Choose Your Present</h1>
+    <p class="subtitle">I prepared four little surprises for you ♡</p>
+
+    <div class="gift-grid">
+      <button class="gift-box" data-gift="0">
+        <span class="gift-emoji">🎁</span>
+        <span>Gift No. 1</span>
+      </button>
+
+      <button class="gift-box" data-gift="1">
+        <span class="gift-emoji">🎀</span>
+        <span>Gift No. 2</span>
+      </button>
+
+      <button class="gift-box" data-gift="2">
+        <span class="gift-emoji">💝</span>
+        <span>Gift No. 3</span>
+      </button>
+
+      <button class="gift-box" data-gift="3">
+        <span class="gift-emoji">🧸</span>
+        <span>Gift No. 4</span>
+      </button>
+    </div>
+
+    <p id="giftProgress">0 / 4 gifts opened</p>
+    <button class="main-btn hidden" id="finishBtn">One Last Letter 💌</button>
+  </div>
+</section>
+
+<div id="giftPopup" class="popup hidden">
+  <div class="popup-card">
+    <div id="popupEmoji" class="popup-emoji">🎁</div>
+    <p class="eyebrow">A LITTLE SURPRISE FOR YOU</p>
+    <h1 id="popupTitle">A Gift for Amora</h1>
+    <p id="popupMessage" class="popup-message"></p>
+    <button class="main-btn" id="closeGiftBtn">Back to Gifts ♡</button>
+  </div>
+</div>
+
+<section id="finalScreen" class="screen">
+  <div class="final-card">
+    <p class="eyebrow">✧ WITH LOVE ✧</p>
+    <h1>One Last Letter 💌</h1>
+    <p id="finalMessage"></p>
+    <button class="main-btn" id="forgiveBtn">One Last Thing... ♡</button>
+  </div>
+</section>
+
+<div id="replyPopup" class="popup hidden">
+  <div class="popup-card reply-card">
+    <div class="popup-emoji">🌹❓</div>
+    <p class="eyebrow">✧ ONE LAST QUESTION ✧</p>
+    <h1>do u forgive me now?? pls say yes TT</h1>
+    <p class="popup-message">I wanna hear your answer!!</p>
+
+    <textarea
+      id="replyInput"
+      placeholder="type ur answer here..."
+      maxlength="1000"
+    ></textarea>
+
+    <button class="main-btn" id="sendReplyBtn">
+      Send Reply 💌
+    </button>
+
+    <p class="reply-note">your reply will be delivered privately ♡</p>
+  </div>
+</div>
+
+<script>
+const WORKER_URL = "https://amora-reply.unknown-kun333.workers.dev/";
+
+/* FALLING STARS */
+
+const starContainer = document.getElementById("starContainer");
+
+for (let i = 0; i < 12; i++) {
+  const star = document.createElement("div");
+  star.className = "star";
+
+  star.style.left = Math.random() * 100 + "%";
+  star.style.animationDuration = (18 + Math.random() * 22) + "s";
+  star.style.animationDelay = (Math.random() * 25) + "s";
+
+  const size = 2 + Math.random() * 2;
+  star.style.width = size + "px";
+  star.style.height = size + "px";
+
+  starContainer.appendChild(star);
+}
+
+/* WEBSITE CONTENT */
+
+const settings = {
+  finalMessage: `to my dearest, Amora..
+
+my universe
+i am SO SO sorry for missing ur comment and not replying!! i feel so awful bcz it made it look like i was ignoring u, and i swear on my life i was NOT ignoring u okay?? it wasn't that at all i just completely missed it and now i'm panicking thinking ur mad at me TvT
+
+u are literally my whole world and my favorite person ever. i hate the thought of making u feel ignored bcz u deserve ALL my attention 24/7!! i promise from now on i'm prioritizing u first, giving u everything u want, and never letting this happen again. ur so precious to me and i just wanna make u smile and feel super loved every single day <3
+
+pls pls pls sincerely forgive me amora, don't be mad at me okay?? i realllyyy realllyyy love u so much huuuuuuowisj TvT 💖
+
+Te amo in aeternum, Amora.
+
+sincerely, breb.`
+};
+
+const gifts = [
+  {
+    emoji: "🌷",
+    title: "A Little Reminder",
+    message: "Never forget how much your kindness matters. Even the smallest things you do can make someone's day brighter :3."
+  },
+  {
+    emoji: "⭐",
+    title: "A Tiny Compliment",
+    message: "You have a wonderful personality, and I hope you never feel like you need to change who you are to be appreciated."
+  },
+  {
+    emoji: "🐶",
+    title: "URGENT ANNOUNCEMENT",
+    message: "TODAY ill be ur pet woof woof\n\ncongratulations!! you have officially adopted one very breb.ily puppy."
+  },
+  {
+    emoji: "☁️",
+    title: "One More Thing...",
+    message: "Please remember to be kind to yourself, too. You deserve the same patience and kindness that you give to others."
+  }
+];
+
+/* SCREEN ELEMENTS */
+
+const intro = document.getElementById("intro");
+const memoryScreen = document.getElementById("memoryScreen");
+const finalScreen = document.getElementById("finalScreen");
+
+const giftPopup = document.getElementById("giftPopup");
+const replyPopup = document.getElementById("replyPopup");
+
+const finishBtn = document.getElementById("finishBtn");
+const giftBoxes = document.querySelectorAll(".gift-box");
+
+let openedGifts = new Set();
+
+/* SCREEN SWITCHING */
+
+function showScreen(screen) {
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("active");
+  });
+
+  screen.classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+/* START BUTTON */
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  showScreen(memoryScreen);
+});
+
+/* GIFT BOXES */
+
+giftBoxes.forEach(box => {
+  box.addEventListener("click", () => {
+    const index = Number(box.dataset.gift);
+    const gift = gifts[index];
+
+    document.getElementById("popupEmoji").textContent = gift.emoji;
+    document.getElementById("popupTitle").textContent = gift.title;
+    document.getElementById("popupMessage").textContent = gift.message;
+
+    giftPopup.classList.remove("hidden");
+
+    openedGifts.add(index);
+    box.classList.add("opened");
+
+    document.getElementById("giftProgress").textContent =
+      `${openedGifts.size} / ${gifts.length} gifts opened`;
+
+    if (openedGifts.size === gifts.length) {
+      finishBtn.classList.remove("hidden");
+    }
+  });
+});
+
+/* CLOSE GIFT POPUP */
+
+document.getElementById("closeGiftBtn").addEventListener("click", () => {
+  giftPopup.classList.add("hidden");
+});
+
+/* FINAL LETTER */
+
+finishBtn.addEventListener("click", () => {
+  giftPopup.classList.add("hidden");
+
+  document.getElementById("finalMessage").textContent =
+    settings.finalMessage;
+
+  showScreen(finalScreen);
+});
+
+/* FORGIVENESS POPUP */
+
+document.getElementById("forgiveBtn").addEventListener("click", () => {
+  replyPopup.classList.remove("hidden");
+});
+
+/* TELEGRAM REPLY */
+
+document.getElementById("sendReplyBtn").addEventListener("click", async () => {
+  const answer = document.getElementById("replyInput").value.trim();
+  const sendButton = document.getElementById("sendReplyBtn");
+
+  if (!answer) {
+    alert("u have to answer me first TT");
+    return;
+  }
+
+  sendButton.disabled = true;
+  sendButton.textContent = "Sending... 💌";
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ answer })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      alert("Delivery error: " + (result.error || response.status));
+      return;
+    }
+
+    alert("your reply has been delivered!! 💗");
+    document.getElementById("replyInput").value = "";
+
+  } catch (error) {
+    console.error("Telegram delivery error:", error);
+    alert("Connection error: " + error.message);
+
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Send Reply 💌";
+  }
+});
+</script>
+
+</body>
+</html>
